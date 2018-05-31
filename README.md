@@ -23,7 +23,7 @@ Please consider a small donation for the work provided here.
 bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
 
 ## Author
-------
+
 David L. Whitehurst <david@ciwise.com>
 
 ## License
