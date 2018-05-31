@@ -22,5 +22,6 @@ work provided here.
 bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
 
 
-
+[license-url]: https://github.com/rsp/travis-hello-modern-cpp/blob/master/LICENSE.md
+[license-img]: https://img.shields.io/github/license/rsp/travis-hello-modern-cpp.svg
 
