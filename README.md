@@ -1,4 +1,4 @@
-# bip39c 
+# bip39c (BIP-39 C-Implementation) 
 
 [![Build Status](https://travis-ci.org/ciwise/bip39c.svg)](https://travis-ci.org/ciwise/bip39c)
 
