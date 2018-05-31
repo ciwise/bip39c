@@ -18,18 +18,13 @@ This project is currently under construction and has not been implemented. Watch
 
 ## Donations
 
-If you use this implementation when it's released, please consider a small donation for the
-work provided here.
+Please consider a small donation for the work provided here.
 
 bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
 
 ## Author
 ------
-[**David L. Whitehurst**](https://ciwise.com/)
-<br/>
-[![Follow on GitHub][github-follow-img]][github-follow-url]
-[![Follow on Twitter][twitter-follow-img]][twitter-follow-url]
-<br/>
+David L. Whitehurst <david@ciwise.com>
 
 ## License
 MIT License (Expat). See [LICENSE.md](LICENSE.md) for details.
