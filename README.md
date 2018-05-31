@@ -1,5 +1,7 @@
 # bip39c [![License][license-img]][license-url]
 
+[![Build Status](https://travis-ci.org/ciwise/bip39c.svg)](https://travis-ci.org/ciwise/bip39c)
+
 A C immplementation of [BIP0039] (https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 
 ## Changes
