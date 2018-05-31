@@ -34,7 +34,7 @@ MIT License (Expat). See [LICENSE.md](LICENSE.md) for details.
 
 [license-url]: https://github.com/rsp/travis-hello-modern-cpp/blob/master/LICENSE.md
 [license-img]: https://img.shields.io/github/license/rsp/travis-hello-modern-cpp.svg
-[github-follow-url]: https://github.com/dlwhiteurst
+[github-follow-url]: https://github.com/dlwhitehurst
 [github-follow-img]: https://img.shields.io/github/followers/rsp.svg?style=social&label=Follow
 [twitter-follow-url]: https://twitter.com/intent/follow?screen_name=dlwhitehurst
 [twitter-follow-img]: https://img.shields.io/twitter/follow/dlwhitehurst.svg?style=social&label=Follow
