@@ -10,5 +10,17 @@ See the [changelog](./CHANGELOG.md) file, or the Github releases for specific ta
 
 An English wordlist is included currently. Support for other languages will follow in future releases. 
 
+## Errata
+
+This project is currently under construction and has not been implemented. Watch if inclined.
+
+## Donations
+
+If you use this implementation when it's released, please consider a small donation for the
+work provided here.
+
+bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
+
+
 
 
