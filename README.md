@@ -1,4 +1,4 @@
-# bip39c [![License][license-img]][license-url]
+# bip39c 
 
 [![Build Status](https://travis-ci.org/ciwise/bip39c.svg)](https://travis-ci.org/ciwise/bip39c)
 
