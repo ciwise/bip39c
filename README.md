@@ -1,4 +1,4 @@
-# bip39c
+# bip39c [![License][license-img]][license-url]
 
 A C immplementation of [BIP0039] (https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 
