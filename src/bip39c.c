@@ -25,10 +25,29 @@
  */
       
     #include <stdio.h>
+    #include <stdlib.h>
     #include <string.h>
+
+    #include <ctype.h>
     #include <openssl/rand.h>
     #include <openssl/err.h>
     #include <openssl/sha.h>
+
+    char hexToNibble(char n)
+    /* convert hexidecimal character to nibble. 0-9a-f. */
+    {
+        /* printf("%c", n); */
+        return n - ( n <= '9' ? '0' : ('a'-10) );
+    }
+
+    unsigned char hexToByte(char *hex)
+    /* convert byte to hexidecimal characters. 0 <= n <= 255. */
+    {
+        unsigned char n = hexToNibble(*hex++);
+        n <<= 4;
+        n += hexToNibble(*hex++);
+        return n;
+    }
 
     int sha256(char *string, char outputBuffer[65])
     {
@@ -54,34 +73,55 @@
 
         int rc = RAND_bytes(entropy, sizeof(entropy));
         unsigned long err = ERR_get_error();
+        printf("Return code = %d\n\n", rc);
 
+        /* Check for return code 1 */
         if(rc != 1) {
-            /* RAND_bytes failed */
-            /* `err` is valid    */
             printf("Error: %lu", err);
         }
 
-        /* OK to proceed */
-        printf("256 bit cryptographically secure random number: ");
-        for (int i = sizeof(entropy) -1 ; i > -1; i --) {
-            printf("%02hhX ", entropy[i]);
+        printf("256 Bit Entropy:\t\t");
+        printf("0x");
+        char entropyStr[sizeof(entropy)*2 + 1];
+        int j;
+
+        for(j=0;j< sizeof(entropy);j++) {
+            sprintf(&entropyStr[j*2], "%02x", entropy[j]);
         }
 
-        printf("\n");
+        printf("%s\n", entropyStr);
 
-        printf("Sizeof entropy: %lu\n", sizeof(entropy));
 
-        static unsigned char checksum[65];
-        int chk = sha256(*entropy, checksum);
-        printf("SHA256 checksum: \n");
-        for (int i = sizeof(checksum) -1; i > -1; i --) {
-            printf("%02hhX ", checksum[i]);
+        static char checksum[65];
+
+        sha256(entropyStr, checksum);
+
+        printf("SHA256 checksum:\t\t0x%s\n", checksum);
+
+        int k=0;
+        for (k=0; k< 32; k++) {
+            result[k] = entropy[k];
         }
+        printf("%c", checksum[0]);
+        printf("%c", checksum[1]);
+        printf("\n##\n");
 
-        printf("\n");
-        printf("\n");
+        static char piece[2];
+        piece[0] = checksum[0];
+        piece[1] = checksum[1];
 
-        printf("%02hhX", checksum[0]);
+        /* stringToHex(firstByte, piece, 2); */
+        int tmp = 0;
+        printf("%02x", hexToByte(piece));
+
+        result[32] =  hexToByte(piece);
+
+        printf("264 bit hex string is:\t\t");
+        printf("0x");
+        int l = 0;
+        for (l = 0; l < sizeof(result); l++) {
+            printf("%02x", result[l]);
+        }
         printf("\n");
 
         return 0;
