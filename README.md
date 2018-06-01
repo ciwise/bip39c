@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ciwise/bip39c.svg)](https://travis-ci.org/ciwise/bip39c)
 
-Reference implementation of BIP-0039: Mnemonic code for generating deterministic keys using C [BIP0039] (https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
+Implementation of BIP-0039: Mnemonic code for generating deterministic keys using C [BIP0039] (https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 
 ## Changes
 
