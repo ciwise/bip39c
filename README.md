@@ -24,9 +24,9 @@ bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
 
 ## Authors
 
-David L. Whitehurst <david@ciwise.com> - This implementation in C
-Marek Palatinus <marek@satoshilabs.com> - Python reference implementation
-Pavol Rusnak <stick@satoshilabs.com> - Python reference implementation
+- David L. Whitehurst <david@ciwise.com> - This implementation in C
+- Marek Palatinus <marek@satoshilabs.com> - Python reference implementation
+- Pavol Rusnak <stick@satoshilabs.com> - Python reference implementation
 
 ## License
 MIT License (Expat). See [LICENSE.md](LICENSE.md) for details.
