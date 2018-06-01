@@ -29,6 +29,6 @@ bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
 - Pavol Rusnak <stick@satoshilabs.com> - Python reference implementation
 
 ## License
-MIT License. See [LICENSE.md](LICENSE.md) for details.
+MIT License. See [LICENSE](LICENSE) for details.
 
 [license-url]: https://github.com/ciwise/bip39c/LICENSE.
