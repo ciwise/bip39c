@@ -279,7 +279,9 @@
         size_t final_len = len / 2;
         size_t s = sizeof(unsigned char*);
         unsigned char *chrs = (unsigned char *) malloc((final_len + 1) * sizeof(*chrs));
-        for (size_t i = 0, j = 0; j < final_len; i += 2, j++)
+        size_t i, j;
+
+        for (i = 0, j = 0; j < final_len; i += 2, j++)
             chrs[j] = (hexstr[i] % 32 + 9) % 25 * 16 + (hexstr[i + 1] % 32 + 9) % 25;
         chrs[final_len] = '\0';
         return chrs;
@@ -293,8 +295,8 @@
     void printUCharArray(unsigned char bytes[], int size) {
         printf("0x");
         char str[size*2 + 1];
-        int j;
 
+        int j;
         for(j=0;j< size;j++) {
             sprintf(&str[j*2], "%02x", bytes[j]);
         }
@@ -315,8 +317,8 @@
         SHA256_Init(&sha256);
         SHA256_Update(&sha256, string, strlen(string));
         SHA256_Final(hash, &sha256);
-
-        for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        int i;
+        for(i = 0; i < SHA256_DIGEST_LENGTH; i++)
         {
             sprintf(outputBuffer + (i * 2), "%02hhX ", hash[i]);
         }
