@@ -17,7 +17,7 @@
 /*
  * Includes
  */
-
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -28,7 +28,6 @@
 #include <openssl/err.h>
 #include <openssl/sha.h>
 
-#include <unistd.h>
 
 /*
  * Defines
