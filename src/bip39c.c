@@ -237,9 +237,9 @@
 
                     int i;
                     int elevenBitIndex = 0;
-                    for (i=0;i<132;i++) {
+                    for (i=0;i<133;i++) {
 
-                        if (elevenBitIndex == 10) {
+                        if (elevenBitIndex == 11) {
                             elevenBits[11] = '\0';
                             printf("%s ", elevenBits);
                             elevenBitIndex = 0;
@@ -248,7 +248,7 @@
                         elevenBits[elevenBitIndex] = segment[i];
                         elevenBitIndex++;
                     }
-
+                    printf("\n");
                     break;
                 }
 
