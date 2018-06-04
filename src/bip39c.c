@@ -36,7 +36,7 @@
     int main(int argc, char **argv) //*argv[])
     {
         char *evalue = NULL; // entropy value
-        int index;
+        //int index;
         int c;
 
         if (argc == 1) {
@@ -72,6 +72,9 @@
 
         /* actual program call */
         bool result = generate(entropyBits);
+
+        /* test call */
+        //int retVal = printWord();
 
         return EXIT_SUCCESS;
     }
@@ -229,10 +232,6 @@
                         printf("%s\n", segment);
                     }
 
-                    /*
-                     * strtol("1010",NULL,2)
-                     * Use this for 11-bit binary to long indices
-                     */
                     char elevenBits[12] = {""};
 
                     int i;
@@ -241,7 +240,11 @@
 
                         if (elevenBitIndex == 11) {
                             elevenBits[11] = '\0';
-                            printf("%s ", elevenBits);
+                            //printf("%s", elevenBits);
+                            long real = strtol(elevenBits, NULL, 2);
+                            //printf("%ld ", real);
+                            printWord(real);
+                            printf(" ");
                             elevenBitIndex = 0;
                         }
 
@@ -266,6 +269,31 @@
          }
 
         return true;
+    }
+
+    int printWord(long lineNumber) {
+        FILE *file = fopen("/Users/ciwise/Development/Coin/bip39c/src/english.txt", "r");
+        bool copy_characters = false;
+
+        int line_number = 1;
+
+        for (;;) {
+            int c = fgetc(file);
+            if (EOF == c) {
+                break;
+            } else if ('\n' == c) {
+                ++line_number;
+                if (lineNumber == line_number) {
+                    copy_characters = true;
+                } else if (copy_characters) {
+                    break;
+                }
+            } else if (copy_characters) {
+                putchar(c);
+            }
+        }
+        fclose(file);
+        return 0;
     }
 
     /*

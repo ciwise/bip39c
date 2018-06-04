@@ -98,4 +98,6 @@ int sha256(char *string, char outputBuffer[65]);
 
 unsigned char* hexstr_to_char(const char* hexstr);
 
+int printWord(long lineNumber);
+
 #endif //BIP39C_BIP39C_H
