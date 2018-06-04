@@ -6,7 +6,7 @@ Implementation of BIP-0039: Mnemonic code for generating deterministic keys usin
 
 ## Changes
 
-See the [changelog](./CHANGELOG) file, or the Github releases for specific tags.
+See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 
 ## Documentation
 
