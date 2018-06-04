@@ -39,8 +39,6 @@
         int index;
         int c;
 
-        opterr = 0;
-
         if (argc == 1) {
             fprintf(stderr, "Usage: %s [-e] [128, 160, 192, 224, or 256]\n", argv[0]);
             exit(EXIT_FAILURE);
