@@ -25,21 +25,55 @@
  */
     #include "bip39c.h"
 
+    /* Global variables */
+    int dflag = 0;
 
     /*
      * The main method calls the generate method to output a random set of
      * mnemonics per BIP-39
      */
 
-    int main(int argc, char* argv[])
+    int main(int argc, char **argv) //*argv[])
     {
-        /* Key method to generate a 128 bit entropy randomized mnemonic sentence */
+        char *evalue = NULL; // entropy value
+        int index;
+        int c;
 
-        if (argc > 0) {
-            bool result = generate(ENTROPY_BITS);
-        } else {
-            printf("Usage: bip39c\n");
+        opterr = 0;
+
+        if (argc == 1) {
+            fprintf(stderr, "Usage: %s [-e] [128, 160, 192, 224, or 256]\n", argv[0]);
+            exit(EXIT_FAILURE);
         }
+
+        while ((c = getopt (argc, argv, "de:")) != -1) {
+            switch (c) {
+                case 'd':
+                    dflag = 1;
+                    break;
+                case 'e': // entropy
+                    evalue = optarg;
+                    break;
+                case '?':
+                    if (optopt == 'e')
+                        fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+                    else if (isprint(optopt))
+                        fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+                    else
+                        fprintf(stderr,
+                                "Unknown option character `\\x%x'.\n",
+                                optopt);
+                    return 1;
+                default:
+                    exit(EXIT_FAILURE);
+            }
+        }
+
+        /* convert string value to long */
+        long entropyBits = strtol(evalue, NULL, 10);
+
+        /* actual program call */
+        bool result = generate(entropyBits);
 
         return EXIT_SUCCESS;
     }
@@ -65,16 +99,14 @@
     bool generate(int entropysize) {
 
         int ENTROPY_ARRAY[5] = { 128, 160, 192, 224, 256 };
-        static char *string = "car boat cat random quarry radio buzz\n";
 
         bool result = isvalueinarray(entropysize, ENTROPY_ARRAY, 5);
 
         if (result != true) {
-            printf("ERROR: Only the following values for entropy bit sizes may be used: 128, 160, 192, 224, and 256\n");
+            fprintf(stderr, "ERROR: Only the following values for entropy bit sizes may be used: 128, 160, 192, 224, and 256\n");
         } else {
 
             /* call generate mnemonic sentence */
-            printf("%s\n", string);
             int bytesOfEntropy = entropysize/8;
             int addChecksumBytes = entropysize/32;
             bool chk = getMnemonic(bytesOfEntropy,addChecksumBytes);
@@ -117,7 +149,7 @@
 
 
         if (result != true) {
-            printf("ERROR: Only the following values for the number of entropy bytes may be used: 16, 20, 24, 28, and 32\n");
+            fprintf(stderr, "ERROR: Only the following values for the number of entropy bytes may be used: 16, 20, 24, 28, and 32\n");
         } else {
 
             /*
@@ -132,7 +164,10 @@
             char segment[133] = { "" };
 
             int rc = RAND_bytes(entropy, sizeof(entropy));
-            printf("ENTROPY:\n");
+
+            if (dflag == 1) {
+                printf("ENTROPY:\n");
+            }
 
             int i;
             for (i=0; i< sizeof(entropy); i++) {
@@ -144,8 +179,11 @@
                 binaryByte[8] = '\0';
                 strcat(entropyBits, binaryByte);
             }
-            printf("%s", entropyBits);
-            printf("\n");
+
+            if (dflag == 1) {
+                printf("%s", entropyBits);
+                printf("\n\n");
+            }
 
             /*
              * ENT SHA256 checksum
@@ -164,41 +202,65 @@
 
             switch (csAdd) {
 
-                case 4: // 128-Bit entropy
-                    printf("\n");
-                    char csBits[5] = { "" };
+                case 4: {
+                    char csBits[5] = {""};
                     char hexStr[3];
-                    memcpy( hexStr, &checksum[0], 2 );
+                    memcpy(hexStr, &checksum[0], 2);
                     hexStr[2] = '\0';
 
                     bytes = hexstr_to_char(hexStr);
 
-                    printf("CS-ADD:\n");
+                    if (dflag == 1) {
+                        printf("CS-ADD:\n");
+                    }
+
                     sprintf(csBits, BYTE_TO_FIRST_FOUR_BINARY_PATTERN, BYTE_TO_FIRST_FOUR_BINARY(*bytes));
                     csBits[4] = '\0';
-                    printf("%s", csBits);
-                    printf("\n\n");
+
+                    if (dflag == 1) {
+                        printf("%s", csBits);
+                        printf("\n\n");
+                    }
 
                     strcat(segment, entropyBits);
                     strcat(segment, csBits);
                     segment[132] = '\0';
-                    printf("ENT + CS-ADD:\n");
-                    printf("%s\n", segment);
+
+                    if (dflag == 1) {
+                        printf("ENT + CS-ADD:\n");
+                        printf("%s\n", segment);
+                    }
+
+                    /*
+                     * strtol("1010",NULL,2)
+                     * Use this for 11-bit binary to long indices
+                     */
+                    char elevenBits[12] = {""};
+
+                    int i;
+                    int elevenBitIndex = 0;
+                    for (i=0;i<132;i++) {
+
+                        if (elevenBitIndex == 10) {
+                            elevenBits[11] = '\0';
+                            printf("%s ", elevenBits);
+                            elevenBitIndex = 0;
+                        }
+
+                        elevenBits[elevenBitIndex] = segment[i];
+                        elevenBitIndex++;
+                    }
 
                     break;
+                }
 
                 case 5:
-
                     break;
                 case 6:
                     break;
                 case 7:
                     break;
                 case 8:
-                    b = checksum[0];
-                    b += checksum[1];
-                    printf("%d", b);
-                    printf("\n");
                     break;
                 default:
                     break;
@@ -208,16 +270,17 @@
         return true;
     }
 
+    /*
+     * This method converts a null terminated hex string
+     * to a pointer to unsigned character bytes
+     */
+
     unsigned char *hexstr_to_char(const char* hexstr)
     {
         size_t len = strlen(hexstr);
-        //printf("len: %zd\n", len);
         size_t final_len = len / 2;
-        //printf("final_len: %zd\n", final_len);
         size_t s = sizeof(unsigned char*);
-        //printf("The size of an unsigned char pointer is: %zd\n", s);
         unsigned char *chrs = (unsigned char *) malloc((final_len + 1) * sizeof(*chrs));
-//        unsigned char *chrs = (unsigned char *) malloc ((final_len) * sizeof(*chrs));
         for (size_t i = 0, j = 0; j < final_len; i += 2, j++)
             chrs[j] = (hexstr[i] % 32 + 9) % 25 * 16 + (hexstr[i + 1] % 32 + 9) % 25;
         chrs[final_len] = '\0';
@@ -226,8 +289,9 @@
 
 
     /*
-     *
+     * This method prints an array of unsigned character bytes
      */
+
     void printUCharArray(unsigned char bytes[], int size) {
         printf("0x");
         char str[size*2 + 1];

@@ -28,6 +28,7 @@
 #include <openssl/err.h>
 #include <openssl/sha.h>
 
+#include <unistd.h>
 
 /*
  * Defines
