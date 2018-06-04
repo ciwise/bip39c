@@ -174,7 +174,7 @@
                     bytes = hexstr_to_char(hexStr);
 
                     printf("CS-ADD:\n");
-                    sprintf(binaryStr, BYTE_TO_FIRST_FOUR_BINARY_PATTERN, BYTE_TO_FIRST_FOUR_BINARY(*bytes));
+                    sprintf(csBits, BYTE_TO_FIRST_FOUR_BINARY_PATTERN, BYTE_TO_FIRST_FOUR_BINARY(*bytes));
                     csBits[4] = '\0';
                     printf("%s", csBits);
                     printf("\n\n");
