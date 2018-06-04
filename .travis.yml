@@ -9,4 +9,4 @@ before_script:
 script:
  - ./configure
  - make
- - ./src/bip39c
+ - ./src/bip39c -e 128
