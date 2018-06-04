@@ -1,4 +1,4 @@
-AC_INIT([bip39c], [1.0], [<a href="mailto:david@ciwise.com">david@ciwise.com</a>])
+AC_INIT(bip39c, 1.0, david@ciwise.com)
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_PROG_CC
 AM_PROG_CC_C_O
