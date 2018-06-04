@@ -1,7 +1,7 @@
 language: c
 
 compiler:
- - gcc
+ - clang 
 
 before_script:
  - ./autogen.sh
