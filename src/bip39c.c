@@ -204,6 +204,7 @@
             switch (csAdd) {
 
                 case 4: {
+                    char segment[133] = { "" };
                     char csBits[5] = {""};
                     char hexStr[3];
                     memcpy(hexStr, &checksum[0], 2);
@@ -261,8 +262,59 @@
                     break;
                 case 7:
                     break;
-                case 8:
+                case 8: {
+                    char segment[265] = { "" };
+                    char csBits[9] = {""};
+                    char hexStr[3];
+                    memcpy(hexStr, &checksum[0], 2);
+                    hexStr[2] = '\0';
+
+                    bytes = hexstr_to_char(hexStr);
+
+                    if (dflag == 1) {
+                        printf("CS-ADD:\n");
+                    }
+
+                    sprintf(csBits, BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(*bytes));
+                    csBits[4] = '\0';
+
+                    if (dflag == 1) {
+                        printf("%s", csBits);
+                        printf("\n\n");
+                    }
+
+                    strcat(segment, entropyBits);
+                    strcat(segment, csBits);
+                    segment[264] = '\0';
+
+                    if (dflag == 1) {
+                        printf("ENT + CS-ADD:\n");
+                        printf("%s\n", segment);
+                    }
+
+                    char elevenBits[12] = {""};
+
+                    int i;
+                    int elevenBitIndex = 0;
+                    for (i = 0; i < 265; i++) {
+
+                        if (elevenBitIndex == 11) {
+                            elevenBits[11] = '\0';
+                            //printf("%s", elevenBits);
+                            long real = strtol(elevenBits, NULL, 2);
+                            //printf("%ld ", real);
+                            printWord(real);
+                            printf(" ");
+                            elevenBitIndex = 0;
+                        }
+
+                        elevenBits[elevenBitIndex] = segment[i];
+                        elevenBitIndex++;
+                    }
+                    printf("\n");
+
                     break;
+                }
                 default:
                     break;
             }
