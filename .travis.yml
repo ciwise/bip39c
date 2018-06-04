@@ -8,6 +8,5 @@ before_script:
 
 script:
  - ./configure
- - make clean
  - make
  - ./src/bip39c
