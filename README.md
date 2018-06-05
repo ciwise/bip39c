@@ -8,9 +8,6 @@ of a truly random binary seed. This seed can be used to create deterministic wal
 by BIP-32 or similar specification.
 
 ## Changes
-v0.1.0 June 5, 2018 - This version supports the complete implementation of the generation of
-the mnemonic sentence.
-
 See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 
 ## Dependencies
