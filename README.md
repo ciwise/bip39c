@@ -8,6 +8,16 @@ Implementation of BIP-0039: Mnemonic code for generating deterministic keys usin
 
 See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 
+## Dependencies
+ * openssl libcrypto https://www.openssl.org/
+
+## Download
+ * Git tree:   https://github.com/ciwise/bip39c
+ * Clone with `git clone https://github.com/ciwise/bip39`
+ 
+## Build
+
+   
 ## Documentation
 
 An English wordlist is included currently. Support for other languages will follow in future releases. 
