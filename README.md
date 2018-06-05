@@ -2,9 +2,14 @@
 
 [![Build Status](https://travis-ci.org/ciwise/bip39c.svg)](https://travis-ci.org/ciwise/bip39c)
 
-Implementation of BIP-0039: Mnemonic code for generating deterministic keys using C [BIP0039] (https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
+Implementation of BIP-0039: Mnemonic code for generating deterministic keys using C [BIP0039] (https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) The BIP-39 standard consists
+of two parts, the generation of the mnemonic sentence of random words and then the generation
+of a truly random binary seed. This seed can be used to create deterministic wallets described
+by BIP-32 or similar specification.
 
 ## Changes
+v0.1.0 June 5, 2018 - This version supports the complete implementation of the generation of
+the mnemonic sentence.
 
 See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 
