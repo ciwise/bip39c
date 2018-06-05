@@ -21,7 +21,9 @@ See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 After cloning the repository you can build the bip39c command easily using the Automake and Autoconf tools with Linux.
 Configure and make the command first and then install using sudo.
 
-`$ autogen.sh && ./configure && make`
+```$ autogen.sh
+./configure
+make```
 
 Now as sudo install.
 
