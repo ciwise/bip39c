@@ -21,6 +21,11 @@ See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 After cloning the repository you can build the bip39c command easily using the Automake and Autoconf tools with Linux.
 Configure and make the command first and then install using sudo.
 
+For Debian/Ubuntu platforms, you may need to install these things as dependencies.
+```
+sudo apt-get install build-essential libssl-dev libcurl4-openssl-dev
+```
+Simple configuration and build.
 ```
 $ autogen.sh
 $ ./configure
