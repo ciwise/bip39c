@@ -78,26 +78,29 @@
   (byte & 0x04 ? '1' : '0'), \
   (byte & 0x02 ? '1' : '0')
 
-/* Default entropy bits */
-#define ENTROPY_BITS 128
 
-/* Method to generate mnemonic sentence */
-bool generate(int entropysize);
+/* function to generate mnemonic sentence */
+int generate(int entropysize);
 
-/* Method to check values in an array */
+/* function to check values in an array */
 bool isvalueinarray(int val, int *arr, int size);
 
-/* Method implementing BIP-39 algorithm */
-bool getMnemonic(int entBytes, int csAdd);
+/* function implementing BIP-39 algorithm */
+int getMnemonic(int entBytes, int csAdd);
 
-/* Method that prints byte array as hex string */
+/* function that prints byte array as hex string */
 void printUCharArray(unsigned char bytes[], int size);
 
-/* Method that implements SHA-256 using openssl */
+/* function that implements SHA-256 using openssl */
 int sha256(char *string, char outputBuffer[65]);
 
+/* function to convert hex string to series of unsigned charactees at pointer */
 unsigned char* hexstr_to_char(const char* hexstr);
 
+/* function to print word found at linenumber */
 int printWord(long lineNumber);
+
+/* function to print entire mnemonic sentence from segmeent (entropy+checksum bits) */
+int produceMnemonicSentence(int segSize, int checksumBits, char *firstByte, char entropy[]);
 
 #endif //BIP39C_BIP39C_H

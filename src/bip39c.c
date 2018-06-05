@@ -25,18 +25,14 @@
  */
     #include "bip39c.h"
 
-    /* Global variables */
-    int dflag = 0;
-
     /*
-     * The main method calls the generate method to output a random set of
+     * The main function calls the generate method to output a random set of
      * mnemonics per BIP-39
      */
 
     int main(int argc, char **argv) //*argv[])
     {
         char *evalue = NULL; // entropy value
-        //int index;
         int c;
 
         if (argc == 1) {
@@ -44,11 +40,8 @@
             exit(EXIT_FAILURE);
         }
 
-        while ((c = getopt (argc, argv, "de:")) != -1) {
+        while ((c = getopt (argc, argv, "e:")) != -1) {
             switch (c) {
-                case 'd':
-                    dflag = 1;
-                    break;
                 case 'e': // entropy
                     evalue = optarg;
                     break;
@@ -71,16 +64,13 @@
         long entropyBits = strtol(evalue, NULL, 10);
 
         /* actual program call */
-        bool result = generate(entropyBits);
-
-        /* test call */
-        //int retVal = printWord();
+        generate(entropyBits);
 
         return EXIT_SUCCESS;
     }
 
     /*
-     * This method checks to see if an input exists in an array
+     * This function checks to see if an input exists in an array
      */
 
     bool isvalueinarray(int val, int *arr, int size){
@@ -93,11 +83,11 @@
     }
 
     /*
-     * The method that generates the mnemonics. Only bit sizes 128, 160, 192, 224,
+     * The function that generates the mnemonics. Only bit sizes 128, 160, 192, 224,
      * and 256 may be used for entropy per BIP-39
      */
 
-    bool generate(int entropysize) {
+    int generate(int entropysize) {
 
         int ENTROPY_ARRAY[5] = { 128, 160, 192, 224, 256 };
 
@@ -107,17 +97,16 @@
             fprintf(stderr, "ERROR: Only the following values for entropy bit sizes may be used: 128, 160, 192, 224, and 256\n");
         } else {
 
-            /* call generate mnemonic sentence */
             int bytesOfEntropy = entropysize/8;
             int addChecksumBytes = entropysize/32;
             bool chk = getMnemonic(bytesOfEntropy,addChecksumBytes);
 
         }
-        return true;
+        return 0;
     }
 
     /*
-     * The method called by generate that implements the BIP-39 algorithm.
+     * The function called by generate that implements the BIP-39 algorithm.
      * The data integer is the multiple that maintains our entropy. The mnemonic must
      * encode entropy multiple of 32 bits hence the use of 128,160,192,224,256.
      *
@@ -141,7 +130,7 @@
      * |  256  |  8 |   264  |  24  |
      */
 
-    bool getMnemonic(int entBytes, int csAdd) {
+    int getMnemonic(int entBytes, int csAdd) {
 
         int ENTROPY_BYTES[5] = { 16, 20, 24, 28, 32 };
         int ENTROPY_BIT_SIZE = entBytes * 8;
@@ -166,10 +155,6 @@
 
             int rc = RAND_bytes(entropy, sizeof(entropy));
 
-            if (dflag == 1) {
-                printf("ENTROPY:\n");
-            }
-
             int i;
             for (i=0; i< sizeof(entropy); i++) {
                 char buffer[3];
@@ -181,11 +166,6 @@
                 strcat(entropyBits, binaryByte);
             }
 
-            if (dflag == 1) {
-                printf("%s", entropyBits);
-                printf("\n\n");
-            }
-
             /*
              * ENT SHA256 checksum
              */
@@ -193,126 +173,38 @@
             static char checksum[65];
             char entropyStr[sizeof(entropy)*2 + 1];
             sha256(entropyStr, checksum);
+            char hexStr[3];
+            memcpy(hexStr, &checksum[0], 2);
+            hexStr[2] = '\0';
 
             /*
-             * CS to add to entropy
+             * CS (Checksum portion) to add to entropy
              */
-
-            int b = 0;
-            unsigned char *bytes;
 
             switch (csAdd) {
 
                 case 4: {
-                    char segment[133] = { "" };
-                    char csBits[5] = {""};
-                    char hexStr[3];
-                    memcpy(hexStr, &checksum[0], 2);
-                    hexStr[2] = '\0';
-
-                    bytes = hexstr_to_char(hexStr);
-
-                    if (dflag == 1) {
-                        printf("CS-ADD:\n");
-                    }
-
-                    sprintf(csBits, BYTE_TO_FIRST_FOUR_BINARY_PATTERN, BYTE_TO_FIRST_FOUR_BINARY(*bytes));
-                    csBits[4] = '\0';
-
-                    if (dflag == 1) {
-                        printf("%s", csBits);
-                        printf("\n\n");
-                    }
-
-                    strcat(segment, entropyBits);
-                    strcat(segment, csBits);
-                    segment[132] = '\0';
-
-                    if (dflag == 1) {
-                        printf("ENT + CS-ADD:\n");
-                        printf("%s\n", segment);
-                    }
-
-                    char elevenBits[12] = {""};
-
-                    int i;
-                    int elevenBitIndex = 0;
-                    for (i=0;i<133;i++) {
-
-                        if (elevenBitIndex == 11) {
-                            elevenBits[11] = '\0';
-                            //printf("%s", elevenBits);
-                            long real = strtol(elevenBits, NULL, 2);
-                            //printf("%ld ", real);
-                            printWord(real);
-                            printf(" ");
-                            elevenBitIndex = 0;
-                        }
-
-                        elevenBits[elevenBitIndex] = segment[i];
-                        elevenBitIndex++;
-                    }
-                    printf("\n");
+                    produceMnemonicSentence(133, 5, hexStr, entropyBits);
                     break;
                 }
 
-                case 5:
+                case 5: {
+                    produceMnemonicSentence(166, 6, hexStr, entropyBits);
                     break;
-                case 6:
+                }
+
+                case 6: {
+                    produceMnemonicSentence(199, 7, hexStr, entropyBits);
                     break;
-                case 7:
+                }
+
+                case 7: {
+                    produceMnemonicSentence(232, 8, hexStr, entropyBits);
                     break;
+                }
+
                 case 8: {
-                    char segment[265] = { "" };
-                    char csBits[9] = {""};
-                    char hexStr[3];
-                    memcpy(hexStr, &checksum[0], 2);
-                    hexStr[2] = '\0';
-
-                    bytes = hexstr_to_char(hexStr);
-
-                    if (dflag == 1) {
-                        printf("CS-ADD:\n");
-                    }
-
-                    sprintf(csBits, BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(*bytes));
-                    csBits[4] = '\0';
-
-                    if (dflag == 1) {
-                        printf("%s", csBits);
-                        printf("\n\n");
-                    }
-
-                    strcat(segment, entropyBits);
-                    strcat(segment, csBits);
-                    segment[264] = '\0';
-
-                    if (dflag == 1) {
-                        printf("ENT + CS-ADD:\n");
-                        printf("%s\n", segment);
-                    }
-
-                    char elevenBits[12] = {""};
-
-                    int i;
-                    int elevenBitIndex = 0;
-                    for (i = 0; i < 265; i++) {
-
-                        if (elevenBitIndex == 11) {
-                            elevenBits[11] = '\0';
-                            //printf("%s", elevenBits);
-                            long real = strtol(elevenBits, NULL, 2);
-                            //printf("%ld ", real);
-                            printWord(real);
-                            printf(" ");
-                            elevenBitIndex = 0;
-                        }
-
-                        elevenBits[elevenBitIndex] = segment[i];
-                        elevenBitIndex++;
-                    }
-                    printf("\n");
-
+                    produceMnemonicSentence(265, 9, hexStr, entropyBits);
                     break;
                 }
                 default:
@@ -320,11 +212,17 @@
             }
          }
 
-        return true;
+        return 0;
     }
 
+    /*
+     * This function prints the word found in the language file at the
+     * particular line number given.
+     */
+
     int printWord(long lineNumber) {
-        FILE *file = fopen("/Users/ciwise/Development/Coin/bip39c/src/english.txt", "r");
+        FILE *file = fopen("/usr/local/data/english.txt", "r");
+
         bool copy_characters = false;
 
         int line_number = 1;
@@ -349,7 +247,7 @@
     }
 
     /*
-     * This method converts a null terminated hex string
+     * This function converts a null terminated hex string
      * to a pointer to unsigned character bytes
      */
 
@@ -369,7 +267,7 @@
 
 
     /*
-     * This method prints an array of unsigned character bytes
+     * This function prints an array of unsigned character bytes
      */
 
     void printUCharArray(unsigned char bytes[], int size) {
@@ -385,7 +283,7 @@
     }
 
     /*
-     * This method implements a SHA256 checksum from a hex
+     * This function implements a SHA256 checksum from a hex
      * string and loads a string of fixed length (hex string
      * of 64 chars or 32 bytes)
      */
@@ -408,4 +306,64 @@
     }
 
 
+    /*
+     * This function prints the mnemonic sentence of size based on the segment
+     * size and number of checksum bits appended to the entropy bits.
+     */
+
+    int produceMnemonicSentence(int segSize, int checksumBits, char *firstByte, char entropy[]) {
+
+        unsigned char *bytes;
+
+        char segment[segSize];
+        memset(segment, 0, segSize* sizeof(char));
+
+        char csBits[checksumBits];
+        memset(csBits, 0, checksumBits*sizeof(char));
+
+        bytes = hexstr_to_char(firstByte);
+
+        if (checksumBits == 5) {
+            sprintf(csBits, BYTE_TO_FIRST_FOUR_BINARY_PATTERN, BYTE_TO_FIRST_FOUR_BINARY(*bytes));
+        }
+        if (checksumBits == 6) {
+            sprintf(csBits, BYTE_TO_FIRST_FIVE_BINARY_PATTERN, BYTE_TO_FIRST_FIVE_BINARY(*bytes));
+        }
+        if (checksumBits == 7) {
+            sprintf(csBits, BYTE_TO_FIRST_SIX_BINARY_PATTERN, BYTE_TO_FIRST_SIX_BINARY(*bytes));
+        }
+        if (checksumBits == 8) {
+            sprintf(csBits, BYTE_TO_FIRST_SEVEN_BINARY_PATTERN, BYTE_TO_FIRST_SEVEN_BINARY(*bytes));
+        }
+        if (checksumBits == 9) {
+            sprintf(csBits, BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(*bytes));
+        }
+
+        csBits[checksumBits - 1] = '\0';
+
+        strcat(segment, entropy);
+        strcat(segment, csBits);
+        segment[segSize - 1] = '\0';
+
+        char elevenBits[12] = {""};
+
+        int i;
+        int elevenBitIndex = 0;
+        for (i=0;i<segSize;i++) {
+
+            if (elevenBitIndex == 11) {
+                elevenBits[11] = '\0';
+                long real = strtol(elevenBits, NULL, 2);
+                printWord(real);
+                printf(" ");
+                elevenBitIndex = 0;
+            }
+
+            elevenBits[elevenBitIndex] = segment[i];
+            elevenBitIndex++;
+        }
+        printf("\n");
+
+        return 0;
+    }
 
