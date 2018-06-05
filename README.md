@@ -29,7 +29,9 @@ $ make
 
 Now as sudo install.
 
-`$ sudo make install`
+```
+$ sudo make install
+```
    
 ## Documentation
 Using the BIP-39 command is easy. The command creates a mnemonic sentence
