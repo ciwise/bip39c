@@ -16,15 +16,31 @@ See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
  * Clone with `git clone https://github.com/ciwise/bip39`
  
 ## Build
+After cloning the repository you can build the bip39c command easily using the Automake and Autoconf tools with Linux.
+Configure and make the command first and then install using sudo.
 
+`$ autogen.sh && ./configure && make`
+
+Now as sudo install.
+
+`$ sudo make install`
    
 ## Documentation
+Using the BIP-39 command is easy. The command creates a mnemonic sentence
+using 5 preselected entropy bit lengths, 128, 160, 192, 224, and 256. For
+example you can create a mnemonic sentence with a 256 bit entropy like so:
+
+`$ bip39c -e 256`
+
+The system will produce a mnemonic sentence.
+
+`agree often tribe olive cement peanut bullet burger stay merit roof cabbage found chapter card divert talk festival rain axis misery spell fog`
 
 An English wordlist is included currently. Support for other languages will follow in future releases. 
 
 ## Errata
 
-This project is currently under construction and has not been implemented. Watch if inclined.
+There are no bugs or issues known at this time.
 
 ## Donations
 
