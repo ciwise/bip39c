@@ -27,7 +27,7 @@
 #include <openssl/rand.h>
 #include <openssl/err.h>
 #include <openssl/sha.h>
-
+#include <openssl/evp.h>
 
 /*
  * Defines
@@ -98,9 +98,12 @@ int sha256(char *string, char outputBuffer[65]);
 unsigned char* hexstr_to_char(const char* hexstr);
 
 /* function to print word found at linenumber */
-int printWord(long lineNumber);
+void printWord(long lineNumber);
 
 /* function to print entire mnemonic sentence from segmeent (entropy+checksum bits) */
 int produceMnemonicSentence(int segSize, int checksumBits, char *firstByte, char entropy[]);
+
+/* function to print 64 byte (512-bit) derived key from mnemonic */
+void pbkdf2_hmac_sha_512(const char* pass);
 
 #endif //BIP39C_BIP39C_H

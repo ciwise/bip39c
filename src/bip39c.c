@@ -33,20 +33,37 @@
     int main(int argc, char **argv) //*argv[])
     {
         char *evalue = NULL; // entropy value
+        char *kvalue = NULL; // mnemonic
+
         int c;
 
         if (argc == 1) {
-            fprintf(stderr, "Usage: %s [-e] [128, 160, 192, 224, or 256]\n", argv[0]);
+            fprintf(stderr, "Usage: %s [-e] [128, 160, 192, 224, or 256] [-k] [\"mnemonic mnemonic ... \"]\n", argv[0]);
             exit(EXIT_FAILURE);
         }
 
-        while ((c = getopt (argc, argv, "e:")) != -1) {
+        while ((c = getopt (argc, argv, "e: k:")) != -1) {
+
             switch (c) {
-                case 'e': // entropy
+
+                case 'e': // entropy set
                     evalue = optarg;
+
+                    /* convert string value to long */
+                    long entropyBits = strtol(evalue, NULL, 10);
+
+                    /* actual program call */
+                    generate(entropyBits);
+
                     break;
+
+                case 'k': // seed key derived from mnemonic
+                    kvalue = optarg;
+                    pbkdf2_hmac_sha_512(kvalue);
+                    break;
+
                 case '?':
-                    if (optopt == 'e')
+                    if (optopt == 'e' || optopt == 'k')
                         fprintf(stderr, "Option -%c requires an argument.\n", optopt);
                     else if (isprint(optopt))
                         fprintf(stderr, "Unknown option `-%c'.\n", optopt);
@@ -55,16 +72,11 @@
                                 "Unknown option character `\\x%x'.\n",
                                 optopt);
                     return 1;
+
                 default:
                     exit(EXIT_FAILURE);
             }
         }
-
-        /* convert string value to long */
-        long entropyBits = strtol(evalue, NULL, 10);
-
-        /* actual program call */
-        generate(entropyBits);
 
         return EXIT_SUCCESS;
     }
@@ -220,7 +232,7 @@
      * particular line number given.
      */
 
-    int printWord(long lineNumber) {
+    void printWord(long lineNumber) {
         FILE *file = fopen("/usr/local/data/english.txt", "r");
 
         bool copy_characters = false;
@@ -243,7 +255,6 @@
             }
         }
         fclose(file);
-        return 0;
     }
 
     /*
@@ -316,7 +327,7 @@
         unsigned char *bytes;
 
         char segment[segSize];
-        memset(segment, 0, segSize* sizeof(char));
+        memset(segment, 0, segSize*sizeof(char));
 
         char csBits[checksumBits];
         memset(csBits, 0, checksumBits*sizeof(char));
@@ -367,3 +378,23 @@
         return 0;
     }
 
+/*
+ * This function performs the hash-stretching function PBKDF2 for BIP-39
+ */
+
+void pbkdf2_hmac_sha_512(const char* pass)
+{
+    char HexResult[128];
+    memset(HexResult, 0, 64);
+
+    unsigned int i;
+    unsigned char digest[64];
+    unsigned char salt[] = { 0x6d, 0x6e, 0x65, 0x6d, 0x6f, 0x6e, 0x69, 0x63 }; // mnemonic (no passphrase)
+    PKCS5_PBKDF2_HMAC(pass, strlen(pass), salt, strlen((const char*) salt), 2048, EVP_sha512(), 64, digest);
+
+    for (i = 0; i < sizeof(digest); i++)
+        sprintf(HexResult + (i * 2), "%02x", 255 & digest[i]);
+
+    printf("%s\n", HexResult);
+
+}
