@@ -70,8 +70,11 @@ bitcoin:1Mxt427mTF3XGf8BiJ8HjkhbiSVvJbkDFY
 ## Authors
 
 - David L. Whitehurst <david@ciwise.com> - This implementation in C
-- Marek Palatinus <marek@satoshilabs.com> - Python reference implementation
-- Pavol Rusnak <stick@satoshilabs.com> - Python reference implementation
+
+## Contributors
+
+- Marek Palatinus <marek@satoshilabs.com> - Python reference implementation (attribution)
+- Pavol Rusnak <stick@satoshilabs.com> - Python reference implementation (attribution)
 
 ## License
 MIT License. See [LICENSE](LICENSE) for details.
