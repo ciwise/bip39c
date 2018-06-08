@@ -191,35 +191,8 @@
              * CS (Checksum portion) to add to entropy
              */
 
-            switch (csAdd) {
+            produceMnemonicSentence(csAdd * 33 + 1, csAdd + 1, hexStr, entropyBits);
 
-                case 4: {
-                    produceMnemonicSentence(133, 5, hexStr, entropyBits);
-                    break;
-                }
-
-                case 5: {
-                    produceMnemonicSentence(166, 6, hexStr, entropyBits);
-                    break;
-                }
-
-                case 6: {
-                    produceMnemonicSentence(199, 7, hexStr, entropyBits);
-                    break;
-                }
-
-                case 7: {
-                    produceMnemonicSentence(232, 8, hexStr, entropyBits);
-                    break;
-                }
-
-                case 8: {
-                    produceMnemonicSentence(265, 9, hexStr, entropyBits);
-                    break;
-                }
-                default:
-                    break;
-            }
          }
 
         return 0;
