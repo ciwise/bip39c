@@ -1,5 +1,7 @@
 language: c
 
+os: osx
+
 compiler:
  - gcc 
 
