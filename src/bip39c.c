@@ -86,8 +86,7 @@
      */
 
     bool isvalueinarray(int val, int *arr, int size){
-        int i;
-        for (i=0; i < size; i++) {
+        for (size_t i=0; i < size; i++) {
             if (arr[i] == val)
                 return true;
         }
@@ -167,8 +166,7 @@
 
             int rc = RAND_bytes(entropy, sizeof(entropy));
 
-            int i;
-            for (i=0; i< sizeof(entropy); i++) {
+            for (size_t i=0; i< sizeof(entropy); i++) {
                 char buffer[3];
                 memcpy( buffer, &entropy[i], 2 );
                 buffer[2] = '\0';
@@ -193,35 +191,8 @@
              * CS (Checksum portion) to add to entropy
              */
 
-            switch (csAdd) {
+            produceMnemonicSentence(csAdd * 33 + 1, csAdd + 1, hexStr, entropyBits);
 
-                case 4: {
-                    produceMnemonicSentence(133, 5, hexStr, entropyBits);
-                    break;
-                }
-
-                case 5: {
-                    produceMnemonicSentence(166, 6, hexStr, entropyBits);
-                    break;
-                }
-
-                case 6: {
-                    produceMnemonicSentence(199, 7, hexStr, entropyBits);
-                    break;
-                }
-
-                case 7: {
-                    produceMnemonicSentence(232, 8, hexStr, entropyBits);
-                    break;
-                }
-
-                case 8: {
-                    produceMnemonicSentence(265, 9, hexStr, entropyBits);
-                    break;
-                }
-                default:
-                    break;
-            }
          }
 
         return 0;
@@ -285,8 +256,7 @@
         printf("0x");
         char str[size*2 + 1];
 
-        int j;
-        for(j=0;j< size;j++) {
+        for(size_t j=0;j< size;j++) {
             sprintf(&str[j*2], "%02x", bytes[j]);
         }
 
@@ -306,8 +276,7 @@
         SHA256_Init(&sha256);
         SHA256_Update(&sha256, string, strlen(string));
         SHA256_Final(hash, &sha256);
-        int i;
-        for(i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        for(size_t i = 0; i < SHA256_DIGEST_LENGTH; i++)
         {
             sprintf(outputBuffer + (i * 2), "%02hhX ", hash[i]);
         }
@@ -358,9 +327,9 @@
 
         char elevenBits[12] = {""};
 
-        int i;
+        //int i;
         int elevenBitIndex = 0;
-        for (i=0;i<segSize;i++) {
+        for (size_t i = 0;i<segSize;i++) {
 
             if (elevenBitIndex == 11) {
                 elevenBits[11] = '\0';
@@ -387,12 +356,11 @@ void pbkdf2_hmac_sha_512(const char* pass)
     char HexResult[128];
     memset(HexResult, 0, 64);
 
-    unsigned int i;
     unsigned char digest[64];
     unsigned char salt[] = { 0x6d, 0x6e, 0x65, 0x6d, 0x6f, 0x6e, 0x69, 0x63 }; // mnemonic (no passphrase)
     PKCS5_PBKDF2_HMAC(pass, strlen(pass), salt, strlen((const char*) salt), 2048, EVP_sha512(), 64, digest);
 
-    for (i = 0; i < sizeof(digest); i++)
+    for (size_t i = 0; i < sizeof(digest); i++)
         sprintf(HexResult + (i * 2), "%02x", 255 & digest[i]);
 
     printf("%s\n", HexResult);
