@@ -5,7 +5,7 @@ AM_PROG_CC_C_O
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile src/Makefile])
 # Custom Define
-MY_CFLAGS="-O2 -Iinclude -I/usr/local/opt/openssl/include -std=c99"
+MY_CFLAGS="-O2 -Iinclude -I/usr/local/opt/openssl/include -std=gnu99"
 
 AC_CHECK_LIB(pthread, pthread_spin_trylock)
 AC_CHECK_LIB(rt,pthread_attr_setdetachstate)
