@@ -96,7 +96,7 @@ void get_mnemonic(int entropysize);
 
 void produce_mnemonic_sentence(int segSize, int checksumBits, char *firstByte, char entropy[]);
 
-void get_root_seed(const char* pass);
+void get_root_seed(const char *pass, const char *passphrase);
 
 void get_words();
 

@@ -120,13 +120,14 @@ int main(int argc, char **argv) //*argv[])
                 break;
 
             case 'k': // root seed key derived from mnemonic
+                evalue = NULL;
+                lvalue = NULL;
                 kvalue = optarg;
-                get_root_seed(kvalue);
                 break;
 
             case 'p': // optional passphrase
                 pvalue = optarg;
-                printf("passphrass=%s\n", pvalue);
+                //printf("passphrass=%s\n", pvalue);
                 break;
 
             case '?':
@@ -157,9 +158,19 @@ int main(int argc, char **argv) //*argv[])
         /* actual program call */
         get_mnemonic(entropyBits);
 
+    } else if (kvalue != NULL) {
+
+        /* set passsphrase to empty string if null */
+        if (pvalue == NULL) {
+            pvalue = "";
+        }
+
+        /* get truly random binary seed */
+        get_root_seed(kvalue, pvalue);
+
     } else {
-        fprintf(stderr, "Both entropy (-e) and language (-l) options are required.\n");
-        exit(EXIT_FAILURE);
+            fprintf(stderr, "Both entropy (-e) and language (-l) options are required.\n");
+            exit(EXIT_FAILURE);
     }
 
     return EXIT_SUCCESS;
@@ -250,21 +261,31 @@ void get_mnemonic(int entropysize) {
  * This function implements the second part of the BIP-39 algorithm.
  */
 
-void get_root_seed(const char *pass) {
+void get_root_seed(const char *pass, const char *passphrase) {
 
-    char HexResult[128];
-    memset(HexResult, 0, 64);
+        /* initialize variables */
+        char HexResult[128];
+        memset(HexResult, 0, 64);
+        unsigned char digest[64];
 
-    unsigned char digest[64];
-    unsigned char salt[] = {0x6d, 0x6e, 0x65, 0x6d, 0x6f, 0x6e, 0x69, 0x63}; // mnemonic (no passphrase)
-    PKCS5_PBKDF2_HMAC(pass, strlen(pass), salt, strlen((const char *) salt), 2048, EVP_sha512(), 64, digest);
+        /* create salt, passphrase could be empty string */
+        char *salt = malloc(strlen(passphrase) + 9);
+        salt = strcat(salt, "mnemonic");
+        salt = strcat(salt, passphrase);
 
-    for (size_t i = 0; i < sizeof(digest); i++)
-        sprintf(HexResult + (i * 2), "%02x", 255 & digest[i]);
+        /* openssl function */
+        PKCS5_PBKDF2_HMAC(pass, strlen(pass), (const unsigned char *) salt, strlen((const char *) salt), 2048, EVP_sha512(), 64, digest);
 
-    printf("%s\n", HexResult);
+        /* we're done with salt */
+        free(salt);
+
+        for (size_t i = 0; i < sizeof(digest); i++)
+            sprintf(HexResult + (i * 2), "%02x", 255 & digest[i]);
+
+        printf("%s\n", HexResult);
 
 }
+
 
 /*
  * This function reads the language file once and loads an array of words for
