@@ -1,0 +1,7 @@
+June 17, 2018
+#############
+
+CI Wise Inc. releases v1.2.0 of bip39c as implementation complete. This release covers
+the generation of a mnemonic in several languages and also provides for the creation
+of a truly random key using this mnemonic and a fixed or static salt plus an optional
+user passphrase.
