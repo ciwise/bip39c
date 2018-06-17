@@ -119,7 +119,6 @@ int main(int argc, char **argv) //*argv[])
 
     if (argc == 1) {
         fprintf(stderr, usage);
-        //fprintf(stderr, "Usage: %s -e entropy bits [-l language code] or %s -k \"mnemonic mnemonic ... \"\n", argv[0], argv[0]);
         exit(EXIT_FAILURE);
     }
 
@@ -129,16 +128,6 @@ int main(int argc, char **argv) //*argv[])
 
             case 'e': // entropy set
                 evalue = optarg;
-
-                /* load word file into memory */
-                //get_words();
-
-                /* convert string value to long */
-                //long entropyBits = strtol(evalue, NULL, 10);
-
-                /* actual program call */
-                //get_mnemonic(entropyBits);
-
                 break;
 
             case 'l': // longuage
@@ -153,7 +142,6 @@ int main(int argc, char **argv) //*argv[])
 
             case 'p': // optional passphrase
                 pvalue = optarg;
-                //printf("passphrass=%s\n", pvalue);
                 break;
 
             case '?':
