@@ -88,6 +88,9 @@
   (byte & 0x04 ? '1' : '0'), \
   (byte & 0x02 ? '1' : '0')
 
+/* Define to the full name of this package. */
+#define PACKAGE_NAME "bip39c"
+
 /*
  * Function declarations
  */

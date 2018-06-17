@@ -80,6 +80,31 @@
 
 char *words[LANG_WORD_CNT];
 
+/* program usage statement */
+static char const usage[] = "\
+Usage: " PACKAGE_NAME " [OPTIONS]\n\
+ Mnemonic:\n\
+  e.g. " PACKAGE_NAME " -e 128 -l eng\n\
+ Key:\n\
+  e.g. " PACKAGE_NAME " -k \"mnemonic\" [-p passphrase]\n\
+ Options:\n\
+  -e, specify the entropy to use\n\
+    128\n\
+    160\n\
+    192\n\
+    224\n\
+    256\n\
+  -l  specify the language code for the mnemonic\n\
+    eng   English\n\
+    spa   Spanish\n\
+    fra   French\n\
+    ita   Italian\n\
+    kor   Korean\n\
+    jpn   Japanese\n\
+    tc    Traditional Chinese\n\
+    sc    Simplified Chinese\n\
+";
+
 /*
  * The main function uses the GNU-added getopt function to std=c99 to provide options
  * to 1) create a varying length mnemonic and 2) a root seed or key for the creation
@@ -93,7 +118,8 @@ int main(int argc, char **argv) //*argv[])
     int c;
 
     if (argc == 1) {
-        fprintf(stderr, "Usage: %s -e entropy bits [-l language code] or %s -k \"mnemonic mnemonic ... \"\n", argv[0], argv[0]);
+        fprintf(stderr, usage);
+        //fprintf(stderr, "Usage: %s -e entropy bits [-l language code] or %s -k \"mnemonic mnemonic ... \"\n", argv[0], argv[0]);
         exit(EXIT_FAILURE);
     }
 
