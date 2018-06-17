@@ -84,25 +84,25 @@ char *words[LANG_WORD_CNT];
 static char const usage[] = "\
 Usage: " PACKAGE_NAME " [OPTIONS]\n\
  Mnemonic:\n\
-  e.g. " PACKAGE_NAME " -e 128 -l eng\n\
+  e.g. " PACKAGE_NAME " -e <bit value> -l <language code>\n\
  Key:\n\
-  e.g. " PACKAGE_NAME " -k \"mnemonic\" [-p passphrase]\n\
+  e.g. " PACKAGE_NAME " -k \"mnemonic\" [-p <passphrase>]\n\
  Options:\n\
-  -e, specify the entropy to use\n\
-    128\n\
-    160\n\
-    192\n\
-    224\n\
-    256\n\
-  -l  specify the language code for the mnemonic\n\
-    eng   English\n\
-    spa   Spanish\n\
-    fra   French\n\
-    ita   Italian\n\
-    kor   Korean\n\
-    jpn   Japanese\n\
-    tc    Traditional Chinese\n\
-    sc    Simplified Chinese\n\
+  -e    specify the entropy to use\n\
+            128\n\
+            160\n\
+            192\n\
+            224\n\
+            256\n\
+  -l    specify the language code for the mnemonic\n\
+            eng   English\n\
+            spa   Spanish\n\
+            fra   French\n\
+            ita   Italian\n\
+            kor   Korean\n\
+            jpn   Japanese\n\
+            tc    Traditional Chinese\n\
+            sc    Simplified Chinese\n\
 ";
 
 /*
