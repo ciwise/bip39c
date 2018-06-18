@@ -15,7 +15,7 @@ See the [changelog](./ChangeLog) file, or the Github releases for specific tags.
 
 ## Download
  * Git tree:   https://github.com/ciwise/bip39c
- * Clone with `git clone https://github.com/ciwise/bip39.git`
+ * Clone with `git clone https://github.com/ciwise/bip39c.git`
  
 ## Build
 After cloning the repository you can build the bip39c command easily using the Automake and Autoconf tools with Linux.
